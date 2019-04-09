@@ -9,7 +9,7 @@ public class ScoreScript : MonoBehaviour
 
 	public bool Round;
 	public int RoundsPlayed;
-	public static int MaxPlayers = 8;
+	public static int MaxPlayers = 10;
 
     void Update()
     {
