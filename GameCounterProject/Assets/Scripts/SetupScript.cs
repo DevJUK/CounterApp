@@ -18,9 +18,6 @@ public class SetupScript : MonoBehaviour
 	public Text[] PlayerNameInputs = new Text[10];
 	public Text[] PlayerNames = new Text[10];
 
-	public GameObject Scorecard;
-	public GameObject[] OtherUI = new GameObject[2];
-
 	[Space(20)]
 	public GameObject PlayerPrefab;
 
@@ -45,11 +42,10 @@ public class SetupScript : MonoBehaviour
 		PlayerNames[8].text = PlayerNameInputs[8].text;
 		PlayerNames[9].text = PlayerNameInputs[9].text;
 
-		foreach (GameObject Go in OtherUI)
-		{
-			Go.SetActive(false);
-		}
 
-		Scorecard.SetActive(true);
+
+		GetComponent<MenuController>().MenuUI.SetActive(false);
+		GetComponent<MenuController>().SetupUI.SetActive(false);
+		GetComponent<MenuController>().CardUI.SetActive(true);
 	}
 }
