@@ -69,5 +69,4 @@ public class PositionUpdater : MonoBehaviour
 				break;
 		}
 	}
-
 }

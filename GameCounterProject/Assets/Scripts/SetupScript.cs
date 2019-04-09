@@ -21,6 +21,8 @@ public class SetupScript : MonoBehaviour
 	[Space(20)]
 	public GameObject PlayerPrefab;
 
+	private int Count;
+
 	private void Awake()
 	{
 		DontDestroyOnLoad(this);
@@ -29,7 +31,7 @@ public class SetupScript : MonoBehaviour
 
 	public void StartGame()
 	{
-		GameTitle = GameTitleInput.text;
+		GameTitleInput.text = GameTitle;
 
 		PlayerNames[0].text = PlayerNameInputs[0].text;
 		PlayerNames[1].text = PlayerNameInputs[1].text;
@@ -47,5 +49,22 @@ public class SetupScript : MonoBehaviour
 		GetComponent<MenuController>().MenuUI.SetActive(false);
 		GetComponent<MenuController>().SetupUI.SetActive(false);
 		GetComponent<MenuController>().CardUI.SetActive(true);
+		GetComponent<ScoreScript>().ActivePlayers = CountPlayers();
+	}
+
+
+	public int CountPlayers()
+	{
+		for (int i = 0; i < PlayerNames.Length; i++)
+		{
+			Debug.Log(PlayerNameInputs[i].text);
+
+			if (PlayerNameInputs[i].text != "")
+			{
+				Count++;
+			}
+		}
+
+		return Count;
 	}
 }
