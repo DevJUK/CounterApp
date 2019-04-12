@@ -21,7 +21,7 @@ public class SetupScript : MonoBehaviour
 	[Space(20)]
 	public GameObject PlayerPrefab;
 
-	private int Count;
+	internal int Count;
 
 	private void Awake()
 	{
