@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PositionUpdater : MonoBehaviour
 {
+	public GameObject Players;
 	public SetupScript Setup;
 	public int Position;
 	public Text ThisText;
@@ -13,6 +14,7 @@ public class PositionUpdater : MonoBehaviour
 	{
 		ThisText = GetComponent<Text>();
 		Setup = FindObjectOfType<SetupScript>();
+		Players = GameObject.Find("ActivePlayers");
 	}
 
 
@@ -70,3 +72,27 @@ public class PositionUpdater : MonoBehaviour
 		}
 	}
 }
+
+
+
+
+/* Archive
+ * 
+ * 				if (Players.GetChild(0).Find("PlayerScore").GetComponent<Text>().text == transform.parent.Find("PlayerScore").GetComponent<Text>().text)
+				{
+					ThisText.color = Setup.Gold;
+					ThisText.text = "1st";
+				}
+				else if (Players.GetChild(Players.GetSiblingIndex()+1).Find("PlayerScore").GetComponent<Text>().text == transform.parent.Find("PlayerScore").GetComponent<Text>().text)
+				{
+					ThisText.color = Setup.Bronze;
+					ThisText.text = "3rd";
+				}
+				else
+				{
+					ThisText.color = Setup.Silver;
+					ThisText.text = "2nd";
+				}
+
+
+	*/

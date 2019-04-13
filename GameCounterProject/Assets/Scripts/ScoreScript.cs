@@ -17,6 +17,7 @@ public class ScoreScript : MonoBehaviour
 
 	public Text[] ScoresInputs;
 	public Text[] PlayerScores;
+	public Text[] PositionsUI;
 
 	public int[] RoundScores;
 	public string[] ScoreNames;
@@ -28,37 +29,24 @@ public class ScoreScript : MonoBehaviour
 
 	private List<PlayerInfo> OrderList;
 
+	private bool NamesSet;
+
 
 	private void Start()
 	{
 		SavedRounds = new Dictionary<int, PlayerInfo>();
 		Players = new PlayerInfo[10];
-
-		for (int i = 0; i < ActivePlayers; i++)
-		{
-			Players[i].name = GetComponent<SetupScript>().PlayerNames[i].ToString();
-		}
-
 	}
 
 	public void ScoreUpdate()
 	{
 		for (int i = 0; i < ActivePlayers; i++)
 		{
-			//if (RoundsPlayed == 0)
-			//{
-			//	Scores.Add(i, (int)GetFloat(ScoresInputs[i].text));
-			//}
-			//else
-			//{
-			//	Scores[i] = (int)(GetFloat(PlayerScores[i].text) + GetFloat(ScoresInputs[i].text));
-			//}
-
-			//PlayerScores[i].text = Scores[i].ToString();
-
-			//ScoresInputs[i].GetComponentInParent<InputField>().Select();
-			//ScoresInputs[i].GetComponentInParent<InputField>().text = null;
-
+			//Sets up player names if it hasen't been done yet
+			if (!NamesSet)
+			{
+				Players[i].name = GetComponent<SetupScript>().PlayerNames[i].text;
+			}
 
 			// Updates the score by adding the int value from the current score to the inputted score int value
 			Players[i].score = (int)(GetFloat(PlayerScores[i].text) + GetFloat(ScoresInputs[i].text));
@@ -73,6 +61,11 @@ public class ScoreScript : MonoBehaviour
 			{
 				SavedRounds.Add(i, Players[i]);
  			}
+		}
+
+		if (!NamesSet)
+		{
+			NamesSet = true;
 		}
 
 		OrderList = new List<PlayerInfo>();
@@ -92,14 +85,8 @@ public class ScoreScript : MonoBehaviour
 			}
 		}
 
+		// sort and set positions
 		Sort(OrderList);
-
-		for (int i = 0; i < ActivePlayers; i++)
-		{
-			Debug.Log(OrderList[i].name);
-		}
-
-
 
 		//Update number of rounds playerd
 		RoundsPlayed++;
@@ -127,7 +114,69 @@ public class ScoreScript : MonoBehaviour
 		for (int i = 0; i < ActivePlayers; i++)
 		{
 			Result.Add(Input[i].score + ((float)(i+1) / 100));
-			Debug.Log("Test " + Input[i].score + ((float)(i+1) / 100));
+			//Debug.Log("Test " + Input[i].score + ((float)(i+1) / 100));
+		}
+
+		Result.Sort();
+		Result.Reverse();
+
+		for (int i = 0; i < ActivePlayers; i++)
+		{
+			//Debug.Log("Sort: " + Result[i]);
+		}
+
+
+		for (int i = 0; i < Input.Count; i++)
+		{
+			float PlayerNumber = Input.IndexOf(Input[i]) + 1;
+			PlayerNumber = PlayerNumber / 100;
+
+			for (int j = 0; j < Result.Count; j++)
+			{
+				if (Result[j].ToString().Substring(Result[j].ToString().Length - 2) == (PlayerNumber.ToString().Substring(PlayerNumber.ToString().Length - 2)))
+				{
+					var list = Input[i];
+					list.position = j+1;
+					Input[i] = list;
+
+					Debug.Log("Player: " + Input[i].name + " Position: " + Input[i].position + " Score: " + Input[i].score);
+				}
+
+				Debug.Log("loop running");
+				Debug.Log(PlayerNumber);
+			}
+		}
+
+		Debug.Log("end");
+
+		UpdatePosition(Input);
+	}
+
+
+
+	private void UpdatePosition(List<PlayerInfo> Input)
+	{
+		// sets the position values
+		for (int i = 0; i < ActivePlayers; i++)
+		{
+			foreach (PositionUpdater up in FindObjectsOfType<PositionUpdater>())
+			{
+				if (up.transform.parent.Find("PlayerName").GetComponent<Text>().text == Input[i].name)
+				{
+					Debug.Log(up.transform.parent.Find("PlayerName").GetComponent<Text>().text + "|||" + Input[i].name);
+
+					up.Position = Input[i].position;
+				}
+			}
+		}
+
+
+		//orders the players in positions
+		foreach (PositionUpdater up in FindObjectsOfType<PositionUpdater>())
+		{
+			Debug.Log(up.transform.parent.GetSiblingIndex() + "Position: " + up.Position);
+
+			up.transform.parent.SetSiblingIndex(up.Position - 1);
 		}
 	}
 }
