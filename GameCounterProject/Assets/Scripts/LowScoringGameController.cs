@@ -20,14 +20,12 @@ public class LowScoringGameController : MonoBehaviour
 				Instantiate(PlayerPrefab, Viewport.transform);
 			}
 		}
-
-		SetGroupHeight();
 	}
 
 
-	private void SetGroupHeight()
+	public void SetGroupHeight()
 	{
-		Viewport.GetComponent<RectTransform>().sizeDelta = new Vector2(0, Viewport.GetComponent<VerticalLayoutGroup>().preferredHeight);
+		Viewport.GetComponent<RectTransform>().sizeDelta += new Vector2(0, Viewport.GetComponent<VerticalLayoutGroup>().preferredHeight);
 		MoveToScoreboard();
 	}
 
