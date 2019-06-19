@@ -46,9 +46,6 @@ public class SetupScript : MonoBehaviour
 
 
 
-		GetComponent<MenuController>().MenuUI.SetActive(false);
-		GetComponent<MenuController>().SetupUI.SetActive(false);
-		GetComponent<MenuController>().CardUI.SetActive(true);
 		GetComponent<ScoreScript>().ActivePlayers = CountPlayers();
 	}
 
